@@ -33,7 +33,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 # Warning 
 
-All the users will have `Test1234=` as their password.
+All the users will have `Test1234=` as their password.  
 This script is not for a production environment but a for a quick setup of an AD lab.
 
 # Limitations
