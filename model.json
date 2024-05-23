@@ -33,5 +33,7 @@
         "What does this one do ??",
         "Always late",
         "Have his/her own agenda"
-    ]
+    ],
+    "ManagersPerDept": 1,
+    "UsersPerDept":10
 }
