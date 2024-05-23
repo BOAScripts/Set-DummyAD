@@ -32,8 +32,8 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 # Warning 
 
-- All the users will have `Test1234=` as their password.  
-- If ADDS role is installed with this script the DSRM password is also `Test1234=`
+- All the users will have `Test1234=` as their password. (defined in model.json)  
+- If ADDS role is installed with this script the DSRM password is also `Test1234=` (uses the same password in model.json)
 - This script is not for a production environment but a for a quick setup of an AD lab.
 
 # Limitations
