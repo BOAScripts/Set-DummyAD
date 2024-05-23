@@ -22,7 +22,6 @@ The content generated comes from the `model.json` (structure of the AD), and the
         - Dept. Managers -> FullControl
         - Dept. Users -> RW
 
-
 # Usage
 
 1. On a windows server (tested on 2022)
@@ -33,8 +32,9 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 # Warning 
 
-All the users will have `Test1234=` as their password.  
-This script is not for a production environment but a for a quick setup of an AD lab.
+- All the users will have `Test1234=` as their password.  
+- If ADDS role is installed with this script the DSRM password is also `Test1234=`
+- This script is not for a production environment but a for a quick setup of an AD lab.
 
 # Limitations
 
