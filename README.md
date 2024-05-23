@@ -42,5 +42,5 @@ This script is not for a production environment but a for a quick setup of an AD
 
 # Refs 
 
-[MCG](https://www.mcg.be/en)
-[Technobel](https://www.technobel.be/fr/)
+- [MCG](https://www.mcg.be/en)
+- [Technobel](https://www.technobel.be/fr/)
