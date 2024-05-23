@@ -26,7 +26,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 # Usage
 
 1. On a windows server (tested on 2022)
-2. `Set-executionPolicy -ExectionPolicy RemoteSigned` (or `Unrestricted` ¯\_(ツ)_/¯, this is a lab...)
+2. `Set-executionPolicy -ExectionPolicy RemoteSigned` (or `Unrestricted` ¯\\_(ツ)_/¯, this is a lab...)
 3. Download & extract release `.zip` file 
 4. cd into the `set-DummyAd` folder
 5. `set-DummyAD.ps1`
