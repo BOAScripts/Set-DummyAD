@@ -1,0 +1,37 @@
+{
+    "RootOUName":"_ROOT",
+    "CustomOUs":[
+        "Computers",
+        "Computers/Servers",
+        "Computers/Clients",
+        "Groups",
+        "Groups/GGS",
+        "Groups/DLGS",
+        "Users",
+        "Users/Internal",
+        "Users/External",
+        "DISABLED users"
+    ],
+    "Depts": {
+        "Internal":"INT",
+        "External":"EXT",
+        "Consultants":"CON",
+        "Finance":"FIN",
+        "HR":"HR",
+        "ICT":"ICT",
+        "Sales":"SAL"
+    },
+    "AdditionalDesc":[
+        "The cool kid",
+        "The useless one",
+        "The bossy one",
+        "NO-DAYS-OFF",
+        "The funny one",
+        "Talks waaay too much",
+        "Count on this one",
+        "Never replies back",
+        "What does this one do ??",
+        "Always late",
+        "Have his/her own agenda"
+    ]
+}
