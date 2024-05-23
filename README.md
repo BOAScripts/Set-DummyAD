@@ -15,7 +15,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
     - ADDS roles if not already installed
     - OUs (from `model.json`)
     - Groups (for each departments)
-    - Users (SAM, Upn, Display name, Description, Department, Group memberships, Managers)
+    - random Users from `1000users.csv` (SAM, Upn, Display name, Description, Department, Group memberships, Managers)
         - Managers
         - Users
     - Share folders for each departments 
