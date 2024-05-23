@@ -18,7 +18,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
     - random Users from `1000users.csv` (SAM, Upn, Display name, Description, Department, Group memberships, Managers)
         - Managers
         - Users
-    - Share folders for each departments 
+    - Shared folders for each departments 
         - Dept. Managers -> FullControl
         - Dept. Users -> RW
 
