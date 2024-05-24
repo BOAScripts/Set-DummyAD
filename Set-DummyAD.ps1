@@ -112,7 +112,7 @@ try {
         ### Create SharedFolder - SMB share Everyone
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){
-            New-Item -Name $DeptSharePath -ItemType Directory
+            New-Item -Name $dept.Name -ItemType Directory -Path DeptSharePath
             New-SmbShare -Name $dept.value -Path $DeptSharePath
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
         }
