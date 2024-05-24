@@ -15,6 +15,7 @@ else {
 
 # [2] Check/Install ADDS role
 if ((Get-WindowsFeature AD-Domain-Services).Installed){
+    Write-Host "-------------------------"
     Write-Host '[v] ADDS already installed' -ForegroundColor Green
     # Get domain.tld + domain DN
     try { 
@@ -29,6 +30,7 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
     }
 }
 else {
+    Write-Host "-------------------------"
     Write-Host '[!] ADDS not installed' -ForegroundColor Yellow
     $rep = Read-Host "    [?] Do you want to install Active Directory Domain and Services ? (y/n)"
     if ($rep -like 'y*'){
@@ -42,6 +44,7 @@ else {
             Write-Host '[i] EXCPECT A REBOOT WARNING ONCE DONE' -ForegroundColor Yellow
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
+            Write-Host "-------------------------"
         }
         catch{write-host $_ -ForegroundColor Red}
     }
@@ -78,7 +81,7 @@ try {
     $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
     $Depts = ($model.Depts).PSObject.Properties
     foreach ($dept in $Depts){
-
+        New-ADOrganizationalUnit -Name $dept.Name -Path $OUusers -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     }
 }
 catch {Write-Host $_ -ForegroundColor Red}
