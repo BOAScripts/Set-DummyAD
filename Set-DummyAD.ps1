@@ -28,6 +28,7 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
     catch{
         write-host $_ -ForegroundColor Red
         write-host '[!] ADDS installed but no domain detected - is the server in a "WAITING TO PROMOTE" state ?' -ForegroundColor Red
+        write-host '[!] Promote to DC and re-exectute this script' -ForegroundColor Red
     }
 }
 else {
@@ -79,12 +80,17 @@ try {
     }
     Write-Host "        [+] CustomOUs" -ForegroundColor Yellow
     Write-Host "    ---------------------"
-    ### foreach Depts in model.json
-    $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
+    
+    ### Prepare Departments generation
     $Depts = ($model.Depts).PSObject.Properties
-    $GGSOU= (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
-    $DLGSOU= (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
+    $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
+    $GGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
+    $DLGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
+    if (!(Test-Path $model.RootSharePath)){
+        New-Item -Name $model.RootSharePath -ItemType Directory
+    }
     Write-Host "[i] Departments generation" -ForegroundColor Green
+    ### foreach Depts in model.json
     foreach ($dept in $Depts){
         # Create Dept OU
         Write-Host "    [i] $($dept.Name)" -ForegroundColor Blue
@@ -101,8 +107,15 @@ try {
         New-ADGroup -Name "DLGS_$($dept.Value)_Share_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
         Write-Host "        [+] $($dept.Name) Security groups (DLGS, GGS)" -ForegroundColor Yellow
         ### Assign DLGS to GGS
+        Add-ADGroupMember -Identity "GGS_$($dept.Value)_Managers" -Members "DLGS_$($dept.Value)_Share_RW"
+        Add-ADGroupMember -Identity "GGS_$($dept.Value)_Users" -Members "DLGS_$($dept.Value)_Share_RO"
         ### Create SharedFolder - SMB share Everyone
-
+        $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
+        if (!(Test-Path $DeptSharePath)){
+            New-Item -Name $DeptSharePath -ItemType Directory
+            New-SmbShare -Name $dept.value -Path $DeptSharePath
+            Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
+        }
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
         Write-Host "    ---------------------"
     }
