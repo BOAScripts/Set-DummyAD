@@ -21,7 +21,7 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
         $domain = (Get-ADDomain).Forest
         $domainDN = (Get-ADRootDSE).rootDomainNamingContext
         Write-Host "    [i] Domain is: $domain // Domain distinguished name is: $domainDN" -ForegroundColor Yellow
-        Write-Host "-------------------------" -ForegroundColor Blue
+        Write-Host "-------------------------"
     }
     catch{
         write-host $_ -ForegroundColor Red
@@ -75,6 +75,11 @@ try {
     }
     Write-Host "    [+] CustomOUs created" -ForegroundColor Yellow
     ### foreach Depts in model.json -> create an OU in Users
+    $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
+    $Depts = ($model.Depts).PSObject.Properties
+    foreach ($dept in $Depts){
+
+    }
 }
 catch {Write-Host $_ -ForegroundColor Red}
 
