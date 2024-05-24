@@ -9,8 +9,6 @@
         "Groups/GGS",
         "Groups/DLGS",
         "Users",
-        "Users/Internal",
-        "Users/External",
         "DISABLED users"
     ],
     "RootSharePath":"C:\\DeptsShares",
