@@ -56,14 +56,14 @@ else {
 }
 
 # [3] Populate AD
-Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Green
+Write-Host "[i] Base AD generation" -ForegroundColor Green
 ## Create OUs
 Write-Host "    [i] OUs generation" -ForegroundColor Yellow
 try {
     ### Root OU
     New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
-    Write-Host "    [+] $RootOUdn created" -ForegroundColor Yellow
+    Write-Host "    [+] $RootOUdn" -ForegroundColor Yellow
     ### Custom OUs in model.json
     foreach ($ouName in $model.CustomOUs) {
         if ($ouName -notlike "*/*"){
@@ -77,7 +77,7 @@ try {
             New-ADOrganizationalUnit -Name $childOU -Path $parentOUdn -ProtectedFromAccidentalDeletion $model.PreventOUDeletion   
         }
     }
-    Write-Host "    [+] CustomOUs created" -ForegroundColor Yellow
+    Write-Host "    [+] CustomOUs" -ForegroundColor Yellow
     Write-Host "-------------------------"
     ### foreach Depts in model.json
     $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
@@ -87,8 +87,9 @@ try {
     Write-Host "[i] Departments generation" -ForegroundColor Green
     foreach ($dept in $Depts){
         # Create Dept OU
+        Write-Host "    [i] $($dept.Name)" -ForegroundColor Blue
         New-ADOrganizationalUnit -Name $dept.Name -Path $OUusers -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
-        Write-Host "    [+] $($dept.Name) OU created" -ForegroundColor Yellow
+        Write-Host "        [+] $($dept.Name) OU" -ForegroundColor Yellow
         ### Set GGS groups
         ### 3 GGS / Department (ALL,Managers,Users)
         New-ADGroup -Name "GGS_$($dept.Value)_ALL" -GroupCategory Security -GroupScope Global -Path $GGSOU
@@ -96,14 +97,14 @@ try {
         New-ADGroup -Name "GGS_$($dept.Value)_Users" -GroupCategory Security -GroupScope Global -Path $GGSOU
         ### Set DLGS groups
         ### 2 DLGS / Departement (Share_RO, Share_RW)
-        New-ADGroup -Name "DLGS_$($dept.Value)_RO" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
-        New-ADGroup -Name "DLGS_$($dept.Value)_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
-        Write-Host "    [+] $($dept.Name) Security groups created (DLGS, GGS)" -ForegroundColor Yellow
+        New-ADGroup -Name "DLGS_$($dept.Value)_Share_RO" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
+        New-ADGroup -Name "DLGS_$($dept.Value)_Share_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
+        Write-Host "        [+] $($dept.Name) Security groups (DLGS, GGS)" -ForegroundColor Yellow
         ### Assign DLGS to GGS
         ### Create SharedFolder - SMB share Everyone
 
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
-
+        Write-Host "-------------------------"
     }
 }
 catch {Write-Host $_ -ForegroundColor Red}
