@@ -5,13 +5,13 @@ $usersCSVPath = ".\1000names.csv"
 
 
 # [1] Check local files presence and import in context
-if (!(Test-Path $modelPath) -or !(Test-Path $usersCSVPath)){
-    Write-Host "$modelPath or $usersCSVPath not present!" -ForegroundColor Red
-    Exit
-}
-else {
+if ((Test-Path $modelPath) -or (Test-Path $usersCSVPath)){
     $model = Get-Content $modelPath | ConvertFrom-Json
     $CSVNames = [System.Collections.ArrayList](Get-Content $usersCSVPath | ConvertFrom-Csv -Delimiter ";")
+}
+else {
+    Write-Host "$modelPath or $usersCSVPath not present!" -ForegroundColor Red
+    Exit
 }
 
 # [2] Check/Install ADDS role
@@ -31,21 +31,21 @@ else {
     Write-Host '[!] ADDS not installed' -ForegroundColor Yellow
     $rep = Read-Host "    [?] Do you want to install Active Directory Domain and Services ? (y/n)"
     if ($rep -like 'y*'){
+        Write-Host "    [!] DSRM password will be: $($model.PSW)"
         $DSRMpsw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
         $domain = Read-Host "    [?] Please enter domain name (domain.tld)"
         try{
             Write-Host '[+] Trying to install ADDS role' -ForegroundColor Yellow
             Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
-            Write-Host '[+] Trying to promote server as Domain Controller (expect a reboot warning)' -ForegroundColor Yellow 
+            Write-Host '[+] Trying to promote server as Domain Controller (expect a reboot warning)' -ForegroundColor Yellow
+            Write-Host '[+] EXCPECT A REBOOT WARNING ONCE DONE' -ForegroundColor Yellow
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
         }
         catch{write-host $_ -ForegroundColor Red}
-        
-
     }
     else {
-        Write-Host "[?] You don't want to install ADDS - Exiting" -ForegroundColor Yellow
+        Write-Host "[!] You don't want to install ADDS - Exiting" -ForegroundColor Red
         Exit
     }
 }
