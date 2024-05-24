@@ -107,8 +107,8 @@ try {
         New-ADGroup -Name "DLGS_$($dept.Value)_Share_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
         Write-Host "        [+] $($dept.Name) Security groups (DLGS, GGS)" -ForegroundColor Yellow
         ### Assign DLGS to GGS
-        Add-ADGroupMember -Identity "GGS_$($dept.Value)_Managers" -Members "DLGS_$($dept.Value)_Share_RW"
-        Add-ADGroupMember -Identity "GGS_$($dept.Value)_Users" -Members "DLGS_$($dept.Value)_Share_RO"
+        Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RW" -Members "GGS_$($dept.Value)_Managers"
+        Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RO" -Members "GGS_$($dept.Value)_Users"
         ### Create SharedFolder - SMB share Everyone
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){
