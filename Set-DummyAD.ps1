@@ -55,7 +55,7 @@ else {
 }
 
 # [3] Populate AD
-Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Yellow
+Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Green
 ## Create OUs
 Write-Host "    [i] OUs generation" -ForegroundColor Yellow
 try {
