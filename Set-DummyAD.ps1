@@ -104,7 +104,7 @@ try {
         ### Create SharedFolder - SMB share Everyone
 
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
-        Write-Host "-------------------------"
+        Write-Host "    ---------------------"
     }
 }
 catch {Write-Host $_ -ForegroundColor Red}
