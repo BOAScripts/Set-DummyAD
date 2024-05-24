@@ -14,6 +14,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 - It will install/generate:
     - ADDS roles if not already installed
     - OUs (from `model.json`, all OUs under a RootOU)
+    - 1 OU per department in the `Users` OU
     - Groups (for each departments)
     - Random Users from `1000users.csv` (SAM, Upn, Display name, Description, Department, Group memberships, Managers)
         - Managers
@@ -28,7 +29,8 @@ The content generated comes from the `model.json` (structure of the AD), and the
 2. `Set-executionPolicy -ExectionPolicy RemoteSigned` - if necessary
 3. Download & extract release `.zip` file 
 4. cd into the downloaded folder
-5. `.\set-DummyAD.ps1`
+5. Review `model.json`
+6. `.\set-DummyAD.ps1`
 
 # Warning 
 
@@ -42,7 +44,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 The provided .csv file is populated with a 1000 user names. If you try to customize this list or the `ManagersPerDept` and `UsersPerDept` value in the model.json. Make sure there is enough data to populate the departments
 
-> ($ManagersPerDept + $UsersPerDept) * $nbrOfDept > $nbrOfUsersInCSV
+> ($ManagersPerDept + $UsersPerDept) * $nbrOfDepts > $nbrOfUsersInCSV
 
 - eg (provided value in model.json):
 - (1 + 10) * 7 > 1000
