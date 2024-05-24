@@ -78,24 +78,37 @@ try {
         }
     }
     Write-Host "    [+] CustomOUs created" -ForegroundColor Yellow
-    ### foreach Depts in model.json -> create an OU in Users
+    Write-Host "-------------------------"
+    ### foreach Depts in model.json
     $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
     $Depts = ($model.Depts).PSObject.Properties
+    $GGSOU= (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
+    $DLGSOU= (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
+    Write-Host "[i] Departments generation" -ForegroundColor Green
     foreach ($dept in $Depts){
+        # Create Dept OU
         New-ADOrganizationalUnit -Name $dept.Name -Path $OUusers -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
+        Write-Host "    [+] $($dept.Name) OU created" -ForegroundColor Yellow
+        ### Set GGS groups
+        ### 3 GGS / Department (ALL,Managers,Users)
+        New-ADGroup -Name "GGS_$($dept.Value)_ALL" -GroupCategory Security -GroupScope Global -Path $GGSOU
+        New-ADGroup -Name "GGS_$($dept.Value)_Managers" -GroupCategory Security -GroupScope Global -Path $GGSOU
+        New-ADGroup -Name "GGS_$($dept.Value)_Users" -GroupCategory Security -GroupScope Global -Path $GGSOU
+        ### Set DLGS groups
+        ### 2 DLGS / Departement (Share_RO, Share_RW)
+        New-ADGroup -Name "DLGS_$($dept.Value)_RO" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
+        New-ADGroup -Name "DLGS_$($dept.Value)_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
+        Write-Host "    [+] $($dept.Name) Security groups created (DLGS, GGS)" -ForegroundColor Yellow
+        ### Assign DLGS to GGS
+        ### Create SharedFolder - SMB share Everyone
+
+        ### Set ACLs to SharedFolder: DLGS (RO & RW)
+
     }
-    Write-Host "    [+] Departments OUs created" -ForegroundColor Yellow
-    Write-Host "-------------------------"
 }
 catch {Write-Host $_ -ForegroundColor Red}
 
-### Set GGS groups
 
-### Set DLGS groups
-
-### Create SharedFolder - SMB share Everyone
-
-### Set ACLs to SharedFolder: DLGS (RO & RW)
 
 ## Get
 
