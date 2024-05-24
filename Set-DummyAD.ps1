@@ -112,8 +112,8 @@ try {
         ### Create SharedFolder - SMB share Everyone
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){
-            New-Item -Name $dept.Name -ItemType Directory -Path $DeptSharePath | Out-Null
-            New-SmbShare -Name $dept.value -Path $model.RootSharePath | Out-Null
+            Write-Host "New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null"
+            Write-Host "New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null"
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
         }
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
