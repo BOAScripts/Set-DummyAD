@@ -12,6 +12,7 @@
         "Users",
         "Users DISABLED"
     ],
+    "RootShareName":"Shares",
     "RootSharePath":"C:\\Shares",
     "Depts": {
         "Consultants":"CON",
