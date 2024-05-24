@@ -21,7 +21,8 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
     try { 
         $domain = (Get-ADDomain).Forest
         $domainDN = (Get-ADRootDSE).rootDomainNamingContext
-        Write-Host "    [i] Domain is: $domain // Domain distinguished name is: $domainDN" -ForegroundColor Yellow
+        Write-Host "    [i] Domain is: $domain " -ForegroundColor Yellow
+        Write-Host "    [i] Domain distinguished name is: $domainDN" -ForegroundColor Yellow
         Write-Host "-------------------------"
     }
     catch{
