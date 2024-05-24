@@ -13,6 +13,7 @@
         "Users/External",
         "DISABLED users"
     ],
+    "RootSharePath":"C:\\DeptsShares",
     "Depts": {
         "Internal":"INT",
         "External":"EXT",

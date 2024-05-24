@@ -13,7 +13,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 - It follows some best practices (GGS, DLGS), and some design I find clean (everything what's not `Microsoft BuiltIn` in a `_ROOT` OU)
 - It will install/generate:
     - ADDS roles if not already installed
-    - OUs (from `model.json`)
+    - OUs (from `model.json`, all OUs under a RootOU)
     - Groups (for each departments)
     - random Users from `1000users.csv` (SAM, Upn, Display name, Description, Department, Group memberships, Managers)
         - Managers

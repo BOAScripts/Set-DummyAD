@@ -37,6 +37,7 @@ else {
     if ($rep -like 'y*'){
         # !!!!! GET PSW FROM MODEL !!!!!
         $DSRMpsw = ConvertTo-SecureString "Test1234=" -AsPlainText -Force
+        # !!!!! GET PSW FROM MODEL !!!!!
         $domain = Read-Host "Please enter domain name (domain.tld)"
         Write-Host "[+] Trying to install ADDS role" -ForegroundColor Yellow
         try{
@@ -57,11 +58,21 @@ else {
 
 # [3] ZHU-LI, do the thing
 
-# [3.1] Get Depts
+## Create OUs
 
-# [3.1.1] Set SharedFolder % Depts
+### Root OU
 
-# [3.1.2] Set DLGS groups
+### Custom OUs
 
-# [3.1.3] Set GGS groups + membership of correspoding DLGS
+## foreach Depts in model.json
+
+### Set GGS groups
+
+### Set DLGS groups
+
+### Create SharedFolder - SMB share Everyone
+
+### Set ACLs to SharedFolder: DLGS (RO & RW)
+
+## Get
 
