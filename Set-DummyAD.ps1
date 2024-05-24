@@ -54,7 +54,7 @@ else {
     }
 }
 
-# [3] ZHU-LI, do the thing (Populate AD)
+# [3] Populate AD
 Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Yellow
 ## Create OUs
 Write-Host "    [i] OUs generation" -ForegroundColor Yellow
@@ -83,6 +83,8 @@ try {
     foreach ($dept in $Depts){
         New-ADOrganizationalUnit -Name $dept.Name -Path $OUusers -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     }
+    Write-Host "    [+] Departments OUs created" -ForegroundColor Yellow
+    Write-Host "-------------------------"
 }
 catch {Write-Host $_ -ForegroundColor Red}
 
