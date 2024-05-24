@@ -29,15 +29,15 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
 }
 else {
     Write-Host '[!] ADDS not installed' -ForegroundColor Yellow
-    $rep = Read-Host "[?] Do you want to install Active Directory Domain and Services ? (y/n)"
+    $rep = Read-Host "    [?] Do you want to install Active Directory Domain and Services ? (y/n)"
     if ($rep -like 'y*'){
         $DSRMpsw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
-        $domain = Read-Host "Please enter domain name (domain.tld)"
+        $domain = Read-Host "    [?] Please enter domain name (domain.tld)"
         try{
             Write-Host '[+] Trying to install ADDS role' -ForegroundColor Yellow
             Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
             Write-Host '[+] Trying to promote server as Domain Controller (expect a reboot warning)' -ForegroundColor Yellow 
-            Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Confirm
+            Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
         }
         catch{write-host $_ -ForegroundColor Red}
