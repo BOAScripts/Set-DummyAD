@@ -1,5 +1,4 @@
-# VARS definition
-
+# static VARIABLES definition
 $modelPath = ".\model.json"
 $usersCSVPath = ".\1000names.csv"
 
@@ -21,24 +20,25 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
     try { 
         $domain = (Get-ADDomain).Forest
         $domainDN = (Get-ADRootDSE).rootDomainNamingContext
+        Write-Host "    [i] Domain is: $domain // Domain distinguished name is: $domainDN" -ForegroundColor Yellow
     }
     catch{
         write-host $_ -ForegroundColor Red
-        write-host 'ADDS installed but no domain detected - is the server in a "WAITING TO PROMOTE" state ?'
+        write-host '[!] ADDS installed but no domain detected - is the server in a "WAITING TO PROMOTE" state ?' -ForegroundColor Red
     }
 }
 else {
     Write-Host '[!] ADDS not installed' -ForegroundColor Yellow
     $rep = Read-Host "    [?] Do you want to install Active Directory Domain and Services ? (y/n)"
     if ($rep -like 'y*'){
-        Write-Host "    [!] DSRM password will be: $($model.PSW)"
+        Write-Host "    [!] DSRM password will be: $($model.PSW)" -ForegroundColor Yellow
         $DSRMpsw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
         $domain = Read-Host "    [?] Please enter domain name (domain.tld)"
         try{
             Write-Host '[+] Trying to install ADDS role' -ForegroundColor Yellow
             Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
             Write-Host '[+] Trying to promote server as Domain Controller (expect a reboot warning)' -ForegroundColor Yellow
-            Write-Host '[+] EXCPECT A REBOOT WARNING ONCE DONE' -ForegroundColor Yellow
+            Write-Host '[i] EXCPECT A REBOOT WARNING ONCE DONE' -ForegroundColor Yellow
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
         }
