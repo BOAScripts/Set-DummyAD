@@ -34,9 +34,9 @@ else {
         $DSRMpsw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
         $domain = Read-Host "Please enter domain name (domain.tld)"
         try{
-            Write-Host "[+] Trying to install ADDS role" -ForegroundColor Yellow
+            Write-Host "[..] Trying to install ADDS role" -ForegroundColor Yellow
             Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
-            Write-Host "[+] Trying to promote server as Domain Controller" -ForegroundColor Yellow 
+            Write-Host "[..] Trying to promote server as Domain Controller" -ForegroundColor Yellow 
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw
             Write-Host "[!] You'll be disconnected to login again with the domain Administrator (same password as local Adminstrator) " -ForegroundColor Yellow
         }
