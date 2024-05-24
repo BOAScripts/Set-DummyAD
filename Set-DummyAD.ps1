@@ -53,12 +53,13 @@ else {
 # [3] ZHU-LI, do the thing (Populate AD)
 Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Yellow
 ## Create OUs
-Write-Host "    [i] Creation OUs" -ForegroundColor Yellow
+Write-Host "    [i] OUs generation" -ForegroundColor Yellow
 try {
     ### Root OU
     New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
     Write-Host "    [+] $RootOUdn created" -ForegroundColor Yellow
+    Write-Host "-------------------------"
     ### Custom OUs in model.json
     foreach ($ouName in $model.CustomOUs) {
         if ($ouName -notlike "*/*"){
