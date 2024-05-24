@@ -87,7 +87,7 @@ try {
     $GGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
     $DLGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
     if (!(Test-Path $model.RootShareName)){
-        New-Item -Name $model.RootShareName -ItemType Directory -Path "C:\"
+        New-Item -Name $model.RootShareName -ItemType Directory -Path "C:\" | Out-Null
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
     ### foreach Depts in model.json
@@ -112,7 +112,7 @@ try {
         ### Create SharedFolder - SMB share Everyone
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){
-            New-Item -Name $dept.Name -ItemType Directory -Path DeptSharePath
+            New-Item -Name $dept.Name -ItemType Directory -Path $DeptSharePath | Out-Null
             New-SmbShare -Name $dept.value -Path $DeptSharePath
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
         }
