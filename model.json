@@ -14,13 +14,13 @@
     ],
     "RootSharePath":"C:\\DeptsShares",
     "Depts": {
-        "Internal":"INT",
-        "External":"EXT",
         "Consultants":"CON",
         "Finance":"FIN",
         "HR":"HR",
         "ICT":"ICT",
-        "Sales":"SAL"
+        "Sales":"SAL",
+        "Engineering":"ENG",
+        "Operation":"OP"
     },
     "AdditionalDesc":[
         "The cool kid",

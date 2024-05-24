@@ -21,8 +21,8 @@ if ((Get-WindowsFeature AD-Domain-Services).Installed){
     try { 
         $domain = (Get-ADDomain).Forest
         $domainDN = (Get-ADRootDSE).rootDomainNamingContext
-        Write-Host "    [i] Domain is: $domain " -ForegroundColor Yellow
-        Write-Host "    [i] Domain distinguished name is: $domainDN" -ForegroundColor Yellow
+        Write-Host "    [i] $domain " -ForegroundColor Blue
+        Write-Host "    [i] $domainDN" -ForegroundColor Blue
         Write-Host "-------------------------"
     }
     catch{
@@ -58,12 +58,12 @@ else {
 # [3] Populate AD
 Write-Host "[i] Base AD generation" -ForegroundColor Green
 ## Create OUs
-Write-Host "    [i] OUs generation" -ForegroundColor Yellow
+Write-Host "    [i] OUs generation" -ForegroundColor Blue
 try {
     ### Root OU
     New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
-    Write-Host "    [+] $RootOUdn" -ForegroundColor Yellow
+    Write-Host "        [+] $RootOUdn" -ForegroundColor Yellow
     ### Custom OUs in model.json
     foreach ($ouName in $model.CustomOUs) {
         if ($ouName -notlike "*/*"){
@@ -77,8 +77,8 @@ try {
             New-ADOrganizationalUnit -Name $childOU -Path $parentOUdn -ProtectedFromAccidentalDeletion $model.PreventOUDeletion   
         }
     }
-    Write-Host "    [+] CustomOUs" -ForegroundColor Yellow
-    Write-Host "-------------------------"
+    Write-Host "        [+] CustomOUs" -ForegroundColor Yellow
+    Write-Host "    ---------------------"
     ### foreach Depts in model.json
     $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
     $Depts = ($model.Depts).PSObject.Properties
