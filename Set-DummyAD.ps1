@@ -56,20 +56,20 @@ Write-Host "[i] Populating AD following json & csv file" -ForegroundColor Yellow
 Write-Host "    [i] Creation OUs" -ForegroundColor Yellow
 try {
     ### Root OU
-    New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $true
+    New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
     Write-Host "    [+] $RootOUdn created" -ForegroundColor Yellow
     ### Custom OUs in model.json
     foreach ($ouName in $model.CustomOUs) {
         if ($ouName -notlike "*/*"){
             # This a TOP OU
-            New-ADOrganizationalUnit -Name $ouName -Path $RootOUdn -ProtectedFromAccidentalDeletion $true
+            New-ADOrganizationalUnit -Name $ouName -Path $RootOUdn -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
         }
         else {
             # This is a SUB OU
             $parentOU, $childOU = $ouName.Split('/')[0], $ouName.Split('/')[1]
             $parentOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $parentOU).DistinguishedName
-            New-ADOrganizationalUnit -Name $childOU -Path $parentOUdn -ProtectedFromAccidentalDeletion $true   
+            New-ADOrganizationalUnit -Name $childOU -Path $parentOUdn -ProtectedFromAccidentalDeletion $model.PreventOUDeletion   
         }
     }
     Write-Host "    [+] CustomOUs created" -ForegroundColor Yellow

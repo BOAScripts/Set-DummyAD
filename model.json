@@ -1,5 +1,6 @@
 {
     "PSW":"Test1234=",
+    "PreventOUDeletion":"$True",
     "RootOUName":"_ROOT",
     "CustomOUs":[
         "Computers",
@@ -9,7 +10,7 @@
         "Groups/GGS",
         "Groups/DLGS",
         "Users",
-        "DISABLED users"
+        "Users DISABLED"
     ],
     "RootSharePath":"C:\\DeptsShares",
     "Depts": {
