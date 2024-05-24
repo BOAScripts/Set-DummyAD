@@ -87,7 +87,7 @@ try {
     $GGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
     $DLGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
     if (!(Test-Path $model.RootShareName)){
-        New-Item -Name $model.RootShareName -ItemType Directory -Path = "C:\"
+        New-Item -Name $model.RootShareName -ItemType Directory -Path "C:\"
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
     ### foreach Depts in model.json
