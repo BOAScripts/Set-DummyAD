@@ -116,7 +116,7 @@ try {
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 50
-            Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full
+            Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force
             $dirACL = Get-Acl $DeptSharePath
 
             Write-Host "        [+] $($dept.Name) Share directory - Everyone FullControl" -ForegroundColor Yellow
