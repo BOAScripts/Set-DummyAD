@@ -16,7 +16,7 @@ else {
 # [2] Check/Install ADDS role
 if ((Get-WindowsFeature AD-Domain-Services).Installed){
     Write-Host "-------------------------"
-    Write-Host '[v] ADDS already installed' -ForegroundColor Green
+    Write-Host '[i] ADDS already installed' -ForegroundColor Green
     # Get domain.tld + domain DN
     try { 
         $domain = (Get-ADDomain).Forest
@@ -79,7 +79,7 @@ try {
         }
     }
     Write-Host "        [+] CustomOUs" -ForegroundColor Yellow
-    Write-Host "    ---------------------"
+    Write-Host "-------------------------"
     
     ### Prepare Departments generation
     $Depts = ($model.Depts).PSObject.Properties
@@ -98,7 +98,7 @@ try {
                     }
         }
         Set-Acl $model.RootSharePath  $fACLs | Out-Null
-        Write-Host "[+] $($model.RootSharePath) - ONLY Admin access" -ForegroundColor Green
+        Write-Host "[+] $($model.RootSharePath) - ONLY Admin access" -ForegroundColor Yellow
         Write-Host "-------------------------"
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
@@ -138,7 +138,7 @@ try {
             Set-Acl -Path $DeptSharePath -AclObject $dirACL
             # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 100
-            Write-Host "        [+] $($dept.Name) Share directory - SMB & NTFS rights" -ForegroundColor Yellow
+            Write-Host "        [+] $($dept.Name) Share directory - SMB & NTFS" -ForegroundColor Yellow
         }
         else {
             Write-Host "        [!] $($dept.Name) directory already exists - skipping SMB/NTFS" -ForegroundColor Red
@@ -173,15 +173,12 @@ try {
             $uSAM = ($uNames.firstName + "." + $uNames.lastName).toLower()
             $uUPN = $uSAM + "@" + $domain
             # Create User
-            New-ADUser -Path $deptDN -Name $uDisplayName -DisplayName $uDisplayName -GivenName $uNames.firstName -Surname $uNames.lastName -SamAccountName $uSAM -UserPrincipalName $uUPN -EmailAddress $uUPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $uDesc -Department $dept.name
+            New-ADUser -Path $deptDN -Name $uDisplayName -DisplayName $uDisplayName -GivenName $uNames.firstName -Surname $uNames.lastName -SamAccountName $uSAM -UserPrincipalName $uUPN -EmailAddress $uUPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $uDesc -Department $dept.name -Manager $mSAM
+            Add-ADGroupMember -Identity "GGS_$($dept.Value)_ALL" -Members $uSAM
+            Add-ADGroupMember -Identity "GGS_$($dept.Value)_Users" -Members $uSAM
         }
-
+        Write-Host "        [+] $($dept.Name) Manager & Users" -ForegroundColor Yellow
 
     }
 }
 catch {Write-Host $_ -ForegroundColor Red}
-
-
-
-## Get
-
