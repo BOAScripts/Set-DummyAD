@@ -120,7 +120,7 @@ try {
             $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow"
             $dirACL.AddAccessRule($acrw)
             $dirACL.AddAccessRule($acro)
-            Set-Acl -Path $DeptSharePath -AclObject $dirACL -
+            Set-Acl -Path $DeptSharePath -AclObject $dirACL
             # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 100
             Write-Host "        [+] $($dept.Name) Share directory - SMB & NTFS rights" -ForegroundColor Yellow
