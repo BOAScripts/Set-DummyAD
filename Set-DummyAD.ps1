@@ -116,14 +116,14 @@ try {
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force | Out-Null
             $dirACL = Get-Acl $DeptSharePath
-            $acrw = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RW","Modify","Allow"
-            $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","Allow"
+            $acrw = new-object System.Security.AccessControl.FileSystemAccessRule("DLGS_$($dept.Value)_Share_RW","Modify","ContainerInherit,ObjectInherit","None","Allow")
+            $acro = new-object System.Security.AccessControl.FileSystemAccessRule("DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow")
             $dirACL.AddAccessRule($acrw)
             $dirACL.AddAccessRule($acro)
-            Set-Acl -Path $DeptSharePath -AclObject $dirACL
+            Set-Acl -Path $DeptSharePath -AclObject $dirACL -
             # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 100
-            Write-Host "        [+] $($dept.Name) Share directory - Everyone FullControl" -ForegroundColor Yellow
+            Write-Host "        [+] $($dept.Name) Share directory - SMB & NTFS rights" -ForegroundColor Yellow
         }
         else {
             Write-Host "        [!] $($dept.Name) directory already exists - skipping SMB/NTFS" -ForegroundColor Red
