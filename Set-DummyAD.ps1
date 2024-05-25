@@ -88,6 +88,17 @@ try {
     $DLGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "DLGS").DistinguishedName
     if (!(Test-Path $model.RootShareName)){
         New-Item -Name $model.RootShareName -ItemType Directory -Path "C:\" | Out-Null
+        # Convert NTFS to explicit instead of inherited
+        icacls $model.RootSharePath /inheritance:d | Out-Null
+        # Remove Users permissions
+        $fACLs = Get-Acl $model.RootSharePath  
+        foreach ($rule in $fACLs.Access){
+            if ($rule.IdentityReference -like "*Users"){
+                $fACLs.RemoveAccessRule($rule) | Out-Null
+                    }
+        }
+        Set-Acl $model.RootSharePath  $fACLs | Out-Null
+        Write-Host "[+] $($model.RootSharePath) - NO users access" -ForegroundColor Blue
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
     ### foreach Depts in model.json
