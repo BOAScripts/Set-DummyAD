@@ -115,7 +115,8 @@ try {
             ## C EST QUOI LE PROBLE LEU ??
             # Write-Host "New-Item -Name $($dept.Name) -ItemType Directory -Path $($model.RootSharePath) | Out-Null"
             # Write-Host "New-SmbShare -Name $($dept.value) -Path $DeptSharePath | Out-Null"
-            New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath -Wait | Out-Null
+            New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
+            Start-Sleep -Seconds 1
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Start-Sleep -Seconds 1
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
