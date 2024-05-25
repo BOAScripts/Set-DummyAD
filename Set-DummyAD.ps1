@@ -113,9 +113,8 @@ try {
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
-            # Start-Sleep -Milliseconds 500
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
-            Start-Sleep -Milliseconds 500
+            Start-Sleep -Milliseconds 50
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
         }
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
