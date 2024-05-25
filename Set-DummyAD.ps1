@@ -1,6 +1,6 @@
 # static VARIABLES definition
 $modelPath = ".\model.json"
-$usersCSVPath = ".\1000names.csv"
+$usersCSVPath = ".\names.csv"
 
 
 # [1] Check local files presence and import in context
