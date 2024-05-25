@@ -10,13 +10,13 @@ This is a powershell script to quickly setup a AD environment. With random user 
 
 During my sysadmin formation I wanted to have a script to populate an Active Directory with dummy content.
 
-The content generated comes from the `model.json` (structure of the AD), and the `1000names.csv` (user names).
+The content generated comes from the `model.json` (structure of the AD), and the `names.csv` (user names).
 - It follows some best practices (GGS, DLGS, Share rights), and some design I find clean (everything what's not `Microsoft BuiltIn` in a `_ROOT` OU)
 - What this script will do:
     - Install ADDS roles if not already installed
     - Generate OUs (following model.json)
     - Generate one OU per Department
-    - Generate 3 GGS et 2 DLGS per Department
+    - Generate 5 security groups (3 GGS et 2 DLGS) per Department
     - Create one share per Department (managers have RW while users have only RO)
     - Generate one manager per Department (random from 1000names.csv)
     - Generate X users per Department (random from 1000names.csv, X defined in model.json)
@@ -38,7 +38,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 ## Populate AD with dummy content
 
-GIF2
+![AD Population](./gifs/Set-DummyAD_PopulateAD.gif)
 
 # Warnings
 
