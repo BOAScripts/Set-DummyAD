@@ -114,8 +114,15 @@ try {
         if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
+            # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 50
-            Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
+            Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full
+            $dirACL = Get-Acl $DeptSharePath
+
+            Write-Host "        [+] $($dept.Name) Share directory - Everyone FullControl" -ForegroundColor Yellow
+        }
+        else {
+            Write-Host "        [!] $($dept.Name) directory already exists - skipping SMB/NTFS" -ForegroundColor Red
         }
         ### Set ACLs to SharedFolder: DLGS (RO & RW)
         Write-Host "    ---------------------"
