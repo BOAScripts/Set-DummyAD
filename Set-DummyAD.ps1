@@ -107,28 +107,29 @@ try {
         # Create Dept OU
         Write-Host "    [i] $($dept.Name)" -ForegroundColor Blue
         New-ADOrganizationalUnit -Name $dept.Name -Path $OUusers -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
+        $deptDN = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "$($dept.name)").DistinguishedName
         Write-Host "        [+] $($dept.Name) OU" -ForegroundColor Yellow
-        ### Set GGS groups
-        ### 3 GGS / Department (ALL,Managers,Users)
+        # Set GGS groups
+        # 3 GGS / Department (ALL,Managers,Users)
         New-ADGroup -Name "GGS_$($dept.Value)_ALL" -GroupCategory Security -GroupScope Global -Path $GGSOU
         New-ADGroup -Name "GGS_$($dept.Value)_Managers" -GroupCategory Security -GroupScope Global -Path $GGSOU
         New-ADGroup -Name "GGS_$($dept.Value)_Users" -GroupCategory Security -GroupScope Global -Path $GGSOU
-        ### Set DLGS groups
-        ### 2 DLGS / Departement (Share_RO, Share_RW)
+        # Set DLGS groups
+        # 2 DLGS / Departement (Share_RO, Share_RW)
         New-ADGroup -Name "DLGS_$($dept.Value)_Share_RO" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
         New-ADGroup -Name "DLGS_$($dept.Value)_Share_RW" -GroupCategory Security -GroupScope DomainLocal -Path $DLGSOU
         Write-Host "        [+] $($dept.Name) Security groups (DLGS, GGS)" -ForegroundColor Yellow
-        ### Assign DLGS to GGS
+        # Assign DLGS to GGS
         Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RW" -Members "GGS_$($dept.Value)_Managers"
         Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RO" -Members "GGS_$($dept.Value)_Users"
-        ### Create SharedFolder
+        # Create SharedFolder
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
-            ### Set SMB: Everyone FC
+            # Set SMB: Everyone FC
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force | Out-Null
-            ### Set NTFS: DLGS (RW, RO)
+            # Set NTFS: DLGS (RW, RO)
             $dirACL = Get-Acl $DeptSharePath
             $acrw = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RW","Modify","ContainerInherit,ObjectInherit","None","Allow"
             $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow"
@@ -144,6 +145,29 @@ try {
         }
         
         Write-Host "    ---------------------"
+        # Users Generation
+        # Managers
+        for ($i=0; $i -lt $model.ManagersPerDept; $i++){
+            # Get a random user names from list and remove it from list
+            $uNames = Get-Random -InputObject $CSVNames
+            $CSVNames.Remove($uNames)
+            # Get a random description ([DEPT] RandomDesc)
+            $uDesc = "[$($dept.value)] " + (Get-Random -InputObject $model.AdditionalDesc)
+            # Build user vars
+            $psw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
+            $displayName = $uNames.firstName + " " + $uNames.lastName
+            $SAM = ($uNames.firstName + "." + $uNames.lastName).toLower()
+            $UPN = $SAM + "@" + $domain
+            # Create User
+            New-ADUser -Path $deptDN -Name $displayName -DisplayName $displayName -GivenName $uNames.firstName -Surname $uNames.lastName -SamAccountName $SAM -UserPrincipalName $UPN -EmailAddress $UPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $uDesc -Department $Dept
+
+        }
+        # Users
+        for ($i=0; $i -lt $model.UsersPerDept; $i++){
+            
+        }
+
+
     }
 }
 catch {Write-Host $_ -ForegroundColor Red}
