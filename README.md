@@ -34,7 +34,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 ## ADDS installation
 
-GIF1
+![ADDS installation](./gifs/Set-DummyAD_ADDSRole.gif)
 
 ## Populate AD with dummy content
 
