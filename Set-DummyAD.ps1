@@ -98,7 +98,7 @@ try {
                     }
         }
         Set-Acl $model.RootSharePath  $fACLs | Out-Null
-        Write-Host "[+] $($model.RootSharePath) - NO users access" -ForegroundColor Blue
+        Write-Host "[+] $($model.RootSharePath) - ONLY Admin access" -ForegroundColor Blue
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
     ### foreach Depts in model.json
