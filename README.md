@@ -4,7 +4,7 @@
 
 See [Demos](#demos)
 
-This is a powershell script to quickly setup a AD environment. With random user names and descriptions. The structure of the AD is defined in `model.json`, see below for possible customization. You have to run this script twice if you want to install ADDS **and** populate the AD with dummy content.
+This is a powershell script to quickly setup an AD environment. With random user names and descriptions. The structure of the AD is defined in `model.json`, see below for possible customization. You have to run this script twice if you want to install ADDS **and** populate the AD with dummy content.
 
 # Context
 
