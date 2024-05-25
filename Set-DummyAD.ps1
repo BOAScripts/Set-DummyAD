@@ -111,12 +111,9 @@ try {
         Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RO" -Members "GGS_$($dept.Value)_Users"
         ### Create SharedFolder - SMB share Everyone
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
-        if (!(Test-Path $DeptSharePath)){
-            ## C EST QUOI LE PROBLE LEU ??
-            # Write-Host "New-Item -Name $($dept.Name) -ItemType Directory -Path $($model.RootSharePath) | Out-Null"
-            # Write-Host "New-SmbShare -Name $($dept.value) -Path $DeptSharePath | Out-Null"
+        if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
-            Start-Sleep -Milliseconds 500
+            # Start-Sleep -Milliseconds 500
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Start-Sleep -Milliseconds 500
             Write-Host "        [+] $($dept.Name) Share directory" -ForegroundColor Yellow
