@@ -55,17 +55,16 @@ else {
         Exit
     }
 }
-
 # [3] Populate AD
 Write-Host "[i] Base AD generation" -ForegroundColor Green
-## Create OUs
+# Create OUs
 Write-Host "    [i] OUs generation" -ForegroundColor Blue
 try {
-    ### Root OU
+    # Root OU
     New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
     $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
     Write-Host "        [+] $RootOUdn" -ForegroundColor Yellow
-    ### Custom OUs in model.json
+    # Custom OUs in model.json
     foreach ($ouName in $model.CustomOUs) {
         if ($ouName -notlike "*/*"){
             # This a TOP OU
@@ -81,7 +80,7 @@ try {
     Write-Host "        [+] CustomOUs" -ForegroundColor Yellow
     Write-Host "-------------------------"
     
-    ### Prepare Departments generation
+    # Prepare Departments generation
     $Depts = ($model.Depts).PSObject.Properties
     $OUusers = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "Users").DistinguishedName
     $GGSOU = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq "GGS").DistinguishedName
@@ -102,7 +101,7 @@ try {
         Write-Host "-------------------------"
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
-    ### foreach Depts in model.json
+    # foreach Depts in model.json
     foreach ($dept in $Depts){
         # Create Dept OU
         Write-Host "    [i] $($dept.Name)" -ForegroundColor Blue
@@ -143,8 +142,6 @@ try {
         else {
             Write-Host "        [!] $($dept.Name) directory already exists - skipping SMB/NTFS" -ForegroundColor Red
         }
-        
-        Write-Host "    ---------------------"
         # Users Generation
         $psw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
         # 1 Manager / Dept
@@ -178,6 +175,7 @@ try {
             Add-ADGroupMember -Identity "GGS_$($dept.Value)_Users" -Members $uSAM
         }
         Write-Host "        [+] $($dept.Name) Manager & Users" -ForegroundColor Yellow
+        Write-Host "    ---------------------"
 
     }
 }
