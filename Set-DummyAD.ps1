@@ -116,8 +116,8 @@ try {
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force | Out-Null
             $dirACL = Get-Acl $DeptSharePath
-            $acrw = new-object System.Security.AccessControl.FileSystemAccessRule("DLGS_$($dept.Value)_Share_RW","Modify","ContainerInherit,ObjectInherit","None","Allow")
-            $acro = new-object System.Security.AccessControl.FileSystemAccessRule("DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow")
+            $acrw = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RW","Modify","ContainerInherit,ObjectInherit","None","Allow"
+            $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow"
             $dirACL.AddAccessRule($acrw)
             $dirACL.AddAccessRule($acro)
             Set-Acl -Path $DeptSharePath -AclObject $dirACL -
