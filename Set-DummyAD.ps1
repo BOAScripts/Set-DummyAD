@@ -98,7 +98,8 @@ try {
                     }
         }
         Set-Acl $model.RootSharePath  $fACLs | Out-Null
-        Write-Host "[+] $($model.RootSharePath) - ONLY Admin access" -ForegroundColor Blue
+        Write-Host "[+] $($model.RootSharePath) - ONLY Admin access" -ForegroundColor Green
+        Write-Host "-------------------------"
     }
     Write-Host "[i] Departments generation" -ForegroundColor Green
     ### foreach Depts in model.json
@@ -120,12 +121,14 @@ try {
         ### Assign DLGS to GGS
         Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RW" -Members "GGS_$($dept.Value)_Managers"
         Add-ADGroupMember -Identity "DLGS_$($dept.Value)_Share_RO" -Members "GGS_$($dept.Value)_Users"
-        ### Create SharedFolder - SMB share Everyone
+        ### Create SharedFolder
         $DeptSharePath = "$($model.RootSharePath)\$($dept.Name)"
         if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
+            ### Set SMB: Everyone FC
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
             Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force | Out-Null
+            ### Set NTFS: DLGS (RW, RO)
             $dirACL = Get-Acl $DeptSharePath
             $acrw = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RW","Modify","ContainerInherit,ObjectInherit","None","Allow"
             $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","ContainerInherit,ObjectInherit","None","Allow"
@@ -139,7 +142,7 @@ try {
         else {
             Write-Host "        [!] $($dept.Name) directory already exists - skipping SMB/NTFS" -ForegroundColor Red
         }
-        ### Set ACLs to SharedFolder: DLGS (RO & RW)
+        
         Write-Host "    ---------------------"
     }
 }
