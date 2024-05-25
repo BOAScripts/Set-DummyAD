@@ -2,17 +2,9 @@
 
 > Yes, I like my scripts with a verbose output.
 
+See [Demos](#demos)
+
 This is a powershell script to quickly setup a AD environment. With random user names and descriptions. The structure of the AD is defined in `model.json`, see below for possible customization. You have to run this script twice if you want to install ADDS **and** populate the AD with dummy content.
-
-# Examples
-
-## ADDS installation
-
-GIF1
-
-## Populate AD with dummy content
-
-GIF2
 
 # Context
 
@@ -38,9 +30,19 @@ The content generated comes from the `model.json` (structure of the AD), and the
 5. Review `model.json`
 6. `.\set-DummyAD.ps1`
 
+# Demos
+
+## ADDS installation
+
+GIF1
+
+## Populate AD with dummy content
+
+GIF2
+
 # Warnings
 
-- All the users will have `Test1234=` as their password. (defined in model.json)  
+- All the users will have `Test1234=` as their password. (customizable in model.json)  
 - If ADDS role is installed with this script the DSRM password is also `Test1234=` (uses the same password in model.json)
 - This script is not for a production environment but a for a quick setup of an AD lab.
 
@@ -59,15 +61,15 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 |Key|Expected values|
 |-|-|
-|PSW|`string`|
-|PreventOUDeletion|`0` or `1`|
+|PSW|`string` - should be compliant with AD password policy|
+|PreventOUDeletion|`0` or `1` to disable ot enable it|
 |RootOUName|`string`|
 |CustomOUs| array of `string` see [Customize the OUs](#customize-the-ous)|
 |RootShareName|`string` - the name the directory that all the shared folder will be|
 |RootSharePath|`string` - the `\\` is normal in a json file, should be consistent with `RootShareName`|
 |Depts|`dictionary` - key:value pairs of `DeptFullName:DeptShortName`|
-|AdditionalDesc|array of `strings`|
-|UsersPerDept|`integer`|
+|AdditionalDesc|array of `string`|
+|UsersPerDept|`integer` - number of users per department|
 
 ## Customize the OUs
 
@@ -76,6 +78,9 @@ You can customize the OUs but:
     - eg: "Computers/Servers" => OK
     - eg: "Computers/Server/001" => NOK
 - Make sure you define the parent OU BEFORE the child OU in the list. Or the child OU generation will throw an error because the parent doesn't exist.
+- Please don't remove the `Groups` entries, as I use them to generate the security groups
+- Please don't remove the `Users` entry, as I use it to generate the users under it.
+
 
 # Thanks to 
 
