@@ -42,16 +42,16 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 ## Customize the user number generation
 
-The provided .csv file is populated with a 1000 user names. If you try to customize this list or the `ManagersPerDept` and `UsersPerDept` value in the model.json. Make sure there is enough data to populate the departments
+The provided .csv file is populated with a 1000 user names. If you try to customize this list or the `UsersPerDept` value in the model.json. Make sure there is enough data to populate the departments
 
-> ($ManagersPerDept + $UsersPerDept) * $nbrOfDepts > $nbrOfUsersInCSV
+> (1 + $UsersPerDept) * $nbrOfDepts > $nbrOfUsersInCSV
 
 - eg (provided value in model.json):
 - (1 + 10) * 7 > 1000
 - 77 > 1000 => this is OK
     - eg (customized values in model.json)
-    - (20 + 200) * 7 > 1000
-    -  1540 > 1000 => this is NOT ok
+    - (1 + 200) * 8 > 1000
+    -  1608 > 1000 => this is NOT ok
 
 ## Customize the OUs
 

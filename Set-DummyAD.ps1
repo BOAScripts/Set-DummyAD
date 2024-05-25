@@ -146,25 +146,34 @@ try {
         
         Write-Host "    ---------------------"
         # Users Generation
-        # Managers
-        for ($i=0; $i -lt $model.ManagersPerDept; $i++){
+        $psw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
+        # 1 Manager / Dept
+        # Get a random user names from list and remove it from list
+        $mNames = Get-Random -InputObject $CSVNames
+        $CSVNames.Remove($mNames)
+        # Get a random description ([DEPT] RandomDesc)
+        $mDesc = "[mgr-$($dept.value)] " + (Get-Random -InputObject $model.AdditionalDesc)
+        $mDisplayName = $mNames.firstName + " " + $mNames.lastName
+        $mSAM = ($mNames.firstName + "." + $mNames.lastName).toLower()
+        $mUPN = $mSAM + "@" + $domain
+        # Create User
+        New-ADUser -Path $deptDN -Name $mDisplayName -DisplayName $mDisplayName -GivenName $mNames.firstName -Surname $mNames.lastName -SamAccountName $mSAM -UserPrincipalName $mUPN -EmailAddress $mUPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $mDesc -Department $dept.name
+        # Add to ALL and Managers GGS
+        Add-ADGroupMember -Identity "GGS_$($dept.Value)_ALL" -Members $mSAM
+        Add-ADGroupMember -Identity "GGS_$($dept.Value)_Managers" -Members $mSAM
+        
+        # Users
+        for ($i=0; $i -lt $model.UsersPerDept; $i++){
             # Get a random user names from list and remove it from list
             $uNames = Get-Random -InputObject $CSVNames
             $CSVNames.Remove($uNames)
             # Get a random description ([DEPT] RandomDesc)
             $uDesc = "[$($dept.value)] " + (Get-Random -InputObject $model.AdditionalDesc)
-            # Build user vars
-            $psw = ConvertTo-SecureString $model.PSW -AsPlainText -Force
-            $displayName = $uNames.firstName + " " + $uNames.lastName
-            $SAM = ($uNames.firstName + "." + $uNames.lastName).toLower()
-            $UPN = $SAM + "@" + $domain
+            $uDisplayName = $uNames.firstName + " " + $uNames.lastName
+            $uSAM = ($uNames.firstName + "." + $uNames.lastName).toLower()
+            $uUPN = $uSAM + "@" + $domain
             # Create User
-            New-ADUser -Path $deptDN -Name $displayName -DisplayName $displayName -GivenName $uNames.firstName -Surname $uNames.lastName -SamAccountName $SAM -UserPrincipalName $UPN -EmailAddress $UPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $uDesc -Department $Dept
-
-        }
-        # Users
-        for ($i=0; $i -lt $model.UsersPerDept; $i++){
-            
+            New-ADUser -Path $deptDN -Name $uDisplayName -DisplayName $uDisplayName -GivenName $uNames.firstName -Surname $uNames.lastName -SamAccountName $uSAM -UserPrincipalName $uUPN -EmailAddress $uUPN -AccountPassword $psw -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Enabled $true -Description $uDesc -Department $dept.name
         }
 
 
