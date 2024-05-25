@@ -42,7 +42,7 @@ else {
         try{
             Write-Host '[+] Trying to install ADDS role' -ForegroundColor Yellow
             Install-WindowsFeature AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
-            Write-Host '[+] Trying to promote server as Domain Controller (expect a reboot warning)' -ForegroundColor Yellow
+            Write-Host '[+] Trying to promote server as Domain Controller' -ForegroundColor Yellow
             Write-Host '[i] EXCPECT A REBOOT WARNING ONCE DONE' -ForegroundColor Yellow
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
