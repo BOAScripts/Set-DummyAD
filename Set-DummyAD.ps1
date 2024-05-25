@@ -47,6 +47,7 @@ else {
             Install-ADDSForest -DomainName $domain -InstallDns -SafeModeAdministratorPassword $DSRMpsw -Force
             Write-Host '[!] You will be disconnected to login again with the domain Administrator (same password as local Adminstrator)' -ForegroundColor Yellow
             Write-Host "-------------------------"
+            $installing = $true
         }
         catch{write-host $_ -ForegroundColor Red}
     }
@@ -55,6 +56,8 @@ else {
         Exit
     }
 }
+# Exit script here if installing
+if ($installing){Exit}
 # [3] Populate AD
 Write-Host "[i] Base AD generation" -ForegroundColor Green
 # Create OUs
