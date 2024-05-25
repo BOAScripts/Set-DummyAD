@@ -114,10 +114,14 @@ try {
         if (!(Test-Path $DeptSharePath)){          
             New-Item -Name $dept.Name -ItemType Directory -Path $model.RootSharePath | Out-Null
             New-SmbShare -Name $dept.value -Path $DeptSharePath | Out-Null
-            # it does weird shit when not waiting the completion of the share
             Grant-SmbShareAccess -Name $dept.value -AccountName 'Everyone' -AccessRight Full -Force | Out-Null
             $dirACL = Get-Acl $DeptSharePath
-
+            $acrw = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RW","Modify","Allow"
+            $acro = new-object System.Security.AccessControl.FileSystemAccessRule "DLGS_$($dept.Value)_Share_RO","ReadAndExecute","Allow"
+            $dirACL.AddAccessRule($acrw)
+            $dirACL.AddAccessRule($acro)
+            Set-Acl -Path $DeptSharePath -AclObject $dirACL
+            # it does weird shit when not waiting the completion of the share
             Start-Sleep -Milliseconds 100
             Write-Host "        [+] $($dept.Name) Share directory - Everyone FullControl" -ForegroundColor Yellow
         }
