@@ -18,8 +18,8 @@ The content generated comes from the `model.json` (structure of the AD), and the
     - Generate one OU per Department
     - Generate 5 security groups (3 GGS et 2 DLGS) per Department
     - Create one share per Department (managers have RW while users have only RO)
-    - Generate one manager per Department (random from 1000names.csv)
-    - Generate X users per Department (random from 1000names.csv, X defined in model.json)
+    - Generate one manager per Department (random from names.csv)
+    - Generate X users per Department (random from names.csv, X defined in model.json)
 
 # Usage
 
@@ -57,19 +57,19 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 ## model.json
 
-> do not rename the file
+> Do **not** rename the file
 
-|Key|Expected values|
-|-|-|
-|PSW|`string` - should be compliant with AD password policy|
-|PreventOUDeletion|`0` or `1` to disable ot enable it|
+|Key|Expected values|Comments|
+|-|-|-|
+|PSW|`string`| Should be compliant with AD password policy|
+|PreventOUDeletion|`0` or `1` to disable or enable it| 0 = You can delete the OUs|
 |RootOUName|`string`|
-|CustomOUs| array of `string` see [Customize the OUs](#customize-the-ous)|
-|RootShareName|`string` - the name the directory that all the shared folder will be|
-|RootSharePath|`string` - the `\\` is normal in a json file, should be consistent with `RootShareName`|
-|Depts|`dictionary` - key:value pairs of `DeptFullName:DeptShortName`|
-|AdditionalDesc|array of `string`|
-|UsersPerDept|`integer` - number of users per department|
+|CustomOUs| array of `string`| See [Customize the OUs](#customize-the-ous)|
+|RootShareName|`string`|The name the directory that all the shared folder will be|
+|RootSharePath|`string`|The `\\` is normal in a json file, should be consistent with `RootShareName`|
+|Depts|`dictionary`| Key:value pairs of `DeptFullName:DeptShortName`|
+|AdditionalDesc|array of `string`||
+|UsersPerDept|`integer`| Number of users per department|
 
 ## Customize the OUs
 
