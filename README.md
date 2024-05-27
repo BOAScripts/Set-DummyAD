@@ -24,11 +24,12 @@ The content generated comes from the `model.json` (structure of the AD), and the
 # Usage
 
 1. On a windows server as administrator (tested on DataCenter2022)
-2. `Set-ExecutionPolicy -ExecutionPolicy Unrestricted` - Well, this is a lab ...
-3. Download & extract the latest [release](https://github.com/BOAScripts/Set-DummyAD/releases/latest) `.zip` file 
-4. cd into the downloaded folder
-5. Review `model.json`
-6. `.\set-DummyAD.ps1`
+2. `Set-ExecutionPolicy -ExecutionPolicy Unrestricted` - Well, this is a lab and I wont pay for a code signing cert.
+3. `Unblock-File -Path .\Set-DummyAD.ps1` - I still dont have 2K to spend on this script.
+4. Download & extract the latest [release](https://github.com/BOAScripts/Set-DummyAD/releases/latest) `.zip` file 
+5. cd into the downloaded folder
+6. Review `model.json`
+7. `.\set-DummyAD.ps1`
 
 # Demos
 
