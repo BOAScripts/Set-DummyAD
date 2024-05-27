@@ -22,7 +22,7 @@
 
 # Production ready ?
 - What would this script needs to be used in a prod env.?
-    - Is there even a demand for creating users in batch in an on-prem AD? There are batch imports but those should fit the current state/structure of the target AD. S
+    - Is there even a demand for creating users in batch in an on-prem AD? There are batch imports but those should fit the current state/structure of the target AD.
     - Entra ID portage ?
 
 # Groups 
