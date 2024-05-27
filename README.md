@@ -24,7 +24,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 # Usage
 
 1. On a windows server as administrator (tested on DataCenter2022)
-2. `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned` - if necessary
+2. `Set-ExecutionPolicy -ExecutionPolicy Unrestricted` - Well, this is a lab ...
 3. Download & extract the latest [release](https://github.com/BOAScripts/Set-DummyAD/releases/latest) `.zip` file 
 4. cd into the downloaded folder
 5. Review `model.json`
