@@ -33,13 +33,12 @@ function New-OUsGeneration{
         [switch]$Custom
     )
     if (!$Custom){
-        write-host $model_in.OUName -ForegroundColor Yellow
         New-ADOrganizationalUnit -Name $model_in.OUName -Path $ParentOU -ProtectedFromAccidentalDeletion $Protected
         $OUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model_in.OUName).DistinguishedName
-        write-host "[+] $($model_in.OUName)"
-        foreach ($i in $model_in.subOUS){
-            New-ADOrganizationalUnit -Name $i -Path $OUdn -ProtectedFromAccidentalDeletion $Protected
-            Write-Host "    [+] $i" -ForegroundColor Yellow
+        write-host "[+] $($model_in.OUName)" -ForegroundColor Yellow
+        foreach ($subOU in $model_in.subOUS){
+            New-ADOrganizationalUnit -Name $subOU -Path $OUdn -ProtectedFromAccidentalDeletion $Protected
+            Write-Host "    [+] $subOU" -ForegroundColor Yellow
         }
     }
     else {
@@ -56,7 +55,8 @@ function New-OUsGeneration{
                 $OUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model_in.OUName).DistinguishedName
                 Write-Host "[+] $ouName"
                 foreach ($subOU in $subOUs) {
-                    Write-Host "subOU: $subOU"
+                    New-ADOrganizationalUnit -Name $subOU -Path $OUdn -ProtectedFromAccidentalDeletion $Protected
+                    Write-Host "    [+] $subOU"
                 }
             } 
             else {break}
@@ -70,9 +70,10 @@ $domainDN = (Get-ADRootDSE).rootDomainNamingContext
 
 New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
 $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
-Write-Host "[+] $($model.RootOUName)"
+Write-Host "[+] $($model.RootOUName)" -ForegroundColor Green
 
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.UsersBaseOU) -Protected $model.PreventOUDeletion
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.ComputersOUs) -Protected $model.PreventOUDeletion
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.SecGroupsOUs) -Protected $model.PreventOUDeletion
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.CustomOUs) -Protected $model.PreventOUDeletion -Custom
+
