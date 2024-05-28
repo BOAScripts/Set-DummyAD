@@ -52,7 +52,7 @@ function New-OUsGeneration{
                 $ouName = $model_in.$ouNameIter
                 $subOUs = $model_in.$subOUsIter
                 New-ADOrganizationalUnit -Name $ouName -Path $ParentOU -ProtectedFromAccidentalDeletion $Protected
-                $OUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model_in.OUName).DistinguishedName
+                $OUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $ouName).DistinguishedName
                 Write-Host "[+] $ouName"
                 foreach ($subOU in $subOUs) {
                     New-ADOrganizationalUnit -Name $subOU -Path $OUdn -ProtectedFromAccidentalDeletion $Protected
