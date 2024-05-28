@@ -39,6 +39,58 @@
         "Engineering":"ENG",
         "Operation":"OPE"
     },
+    "Departments":{
+        "1":{
+            "DeptFullName":"Consultants",
+            "DeptShortName":"CON",
+            "DeptRoles":[
+                "Business analyst",
+                "Project Manager",
+                "Change consultant",
+                "Process owner",
+                "Solution architect",
+                "Technical lead"
+            ]
+        },
+        "2":{
+            "DeptFullName":"Finance",
+            "DeptShortName":"FIN",
+            "DeptRoles":[
+                "Treasurer",
+                "Controller",
+                "Internal auditor",
+                "Financial accountant",
+                "Tax accountant",
+                "Managerial accountant"
+            ]
+        },
+        "3":{
+            "DeptFullName":"Human Resources",
+            "DeptShortName":"HR",
+            "DeptRoles":[
+                "Recruitment",
+                "Performance",
+                "Learning and development",
+                "Career planning",
+                "Function evaluation",
+                "Health and safety",
+                "Administrative"
+            ]
+        },
+        "4":{
+            "DeptFullName":"Human Resources",
+            "DeptShortName":"HR",
+            "DeptRoles":[
+                "Recruitment",
+                "Performance",
+                "Learning and development",
+                "Career planning",
+                "Function evaluation",
+                "Health and safety",
+                "Administrative"
+            ]
+        }
+    },
     "AdditionalDesc":[
         "The cool kid",
         "The useless one",

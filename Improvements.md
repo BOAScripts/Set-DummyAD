@@ -9,9 +9,9 @@
 - Enable DFS ? [Efficient DFS Management with PowerShell Scripts](https://adamtheautomator.com/dfs-powershell-scripts/)
 
 # Custom OUs
-- Should be able to go deeper. (loop through each `/`)
-- Array of arrays ? Instead of array of strings.
-- Groups and Users entries not defined in CustomOUs but in another variable? As they are important in the creation of the structure.
+[ ] Should be able to go deeper. (loop through each `/`).  
+[x] Array of arrays ? Instead of array of strings.  
+[x] Groups and Users entries not defined in CustomOUs but in another variable? As they are important in the creation of the structure.
 
 # Password management
 - Instead of one main password, generate/export a random password per user.

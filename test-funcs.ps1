@@ -1,10 +1,15 @@
+# STATIC VARS
 $modelPath = ".\model.json"
 $model = Get-Content $modelPath | ConvertFrom-Json
+# VARS
+$domain = (Get-ADDomain).Forest
+$domainDN = (Get-ADRootDSE).rootDomainNamingContext
 
 
+# FUNCTIONS
 <#
 .SYNOPSIS
-Create new OUs and subOUs
+Create new OUs and subOUs(if any)
 
 .DESCRIPTION
 Create new OUs and subOUs from the .json input in the $ParentOU 
@@ -15,11 +20,11 @@ Distinguished name of the parent OU where the OU and subOUs will be created
 .PARAMETER model_in
 Imported data from a .json with at least an "OUName" key value in it.
 
-.PARAMETER Custom
-Switch to use when there are more than one OU/subOUs in the $model_in, OU name key should match "CustomNameX" and subOUs array key should match "subOUsX" (where x begin at 1)
-
 .PARAMETER Protected
 boolean to set "ProtectedFromAccidentalDeletion" when creating the OU/subOUs
+
+.PARAMETER Custom
+Switch to use when there are more than one OU/subOUs in the $model_in, OU name key should match "CustomNameX" and subOUs array key should match "subOUsX" (where x begin at 1)
 
 .EXAMPLE
 New-OUsGeneration -ParentOU "OU=_ROOT,DC=testdom,DC=local" -model_in ($model.SecGroupsOUs)
@@ -58,15 +63,12 @@ function New-OUsGeneration{
                     New-ADOrganizationalUnit -Name $subOU -Path $OUdn -ProtectedFromAccidentalDeletion $Protected
                     Write-Host "    [+] $subOU"
                 }
-            } 
+            }
             else {break}
             $index++
         }
     }
 }
-
-# $domain = (Get-ADDomain).Forest
-$domainDN = (Get-ADRootDSE).rootDomainNamingContext
 
 New-ADOrganizationalUnit -Name $model.RootOUName -Path $domainDN -ProtectedFromAccidentalDeletion $model.PreventOUDeletion
 $RootOUdn = (Get-ADOrganizationalUnit -Filter * | Where-Object Name -eq $model.RootOUName).DistinguishedName
@@ -77,3 +79,16 @@ New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.ComputersOUs) -Protected
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.SecGroupsOUs) -Protected $model.PreventOUDeletion
 New-OUsGeneration -ParentOU $RootOUdn -model_in ($model.CustomOUs) -Protected $model.PreventOUDeletion -Custom
 
+#----------------------
+
+# Struct
+
+# install-adds
+
+#Create defined OUs
+
+# Depts
+## Create-OU
+## Create-SecGroups
+## Add-members
+## Create-FileShare
