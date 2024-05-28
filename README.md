@@ -25,7 +25,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 
 1. On a windows server as administrator (tested on DataCenter2022)
 2. `Set-ExecutionPolicy -ExecutionPolicy Unrestricted` - Well, this is a lab and I wont pay for a code signing cert.
-3. `Unblock-File -Path .\Set-DummyAD.ps1` - I still dont have 2K to spend on this script.
+3. `Unblock-File -Path .\Set-DummyAD.ps1` - I still dont have 500$ to spend on this script.
 4. Download & extract the latest [release](https://github.com/BOAScripts/Set-DummyAD/releases/latest) `.zip` file 
 5. cd into the downloaded folder
 6. Review `model.json`
@@ -52,6 +52,7 @@ The content generated comes from the `model.json` (structure of the AD), and the
 ## CSV file
 
 1. CSV file name should be `names.csv`
+2. CSV headers should be `firstName;lastName`
 2. The CSV delimiter should be `;`, verify with notepad if necessary.
 3. Make sure there is no duplicates, nor weird characters (I do not sanitize those names)
 4. Make sure there is enough data to populate the AD ((1 + $UsersPerDept) * $nbrOfDepts should be greater than $nbrOfUsersInCSV)

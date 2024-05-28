@@ -92,7 +92,7 @@ try {
         New-Item -Name $model.RootShareName -ItemType Directory -Path "C:\" | Out-Null
         # Convert NTFS to explicit instead of inherited
         icacls $model.RootSharePath /inheritance:d | Out-Null
-        # Remove "Domain Users" permissions
+        # Remove Users permissions
         $fACLs = Get-Acl $model.RootSharePath  
         foreach ($rule in $fACLs.Access){
             if ($rule.IdentityReference -like "*Users"){

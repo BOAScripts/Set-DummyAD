@@ -1,3 +1,7 @@
+# Powershell structure
+- Param usage ? (install-adds or populate-ad)
+- Function usage
+
 # Share path definition
 - Define Shares container drive/Path as a variable
 - Better define Shares container name variable
@@ -11,7 +15,7 @@
 
 # Password management
 - Instead of one main password, generate/export a random password per user.
-    - psw protect the exported file.
+    - psw protect the exported file, or something else? 
 - Variables for `Change password at logon`, `User can change psw`, and `psw never expires`
 - Password policy modification? (+ groups assign.)
 
@@ -19,6 +23,7 @@
 - Internal >< External sub OUs with distinct roles / psw policy ? 
 - Account expiration mgmt
 - Names sanitization (I have those functions... why not using them?)
+- Instead of random stupid desc. why not an array of possible roles per Dept ?
 
 # Production ready ?
 - What would this script needs to be used in a prod env.?

@@ -2,32 +2,16 @@
     "PSW":"Test1234=",
     "PreventOUDeletion":0,
     "RootOUName":"_ROOT",
-    "UsersBaseOU":{
-        "OUName":"Users"
-    },
-    "ComputersOUs":{
-        "OUName":"Computers",
-        "subOUs":[
-            "Servers",
-            "Clients"
-        ]
-    },
-    "SecGroupsOUs":{
-        "OUName":"Groups",
-        "subOUs":[
-            "GGS",
-            "DLGS"
-        ]
-    },
-    "CustomOUs":{
-        "CustomName1":"Users DISABLED",
-        "subOUs1":[
-            "test1",
-            "test2"
-        ],
-        "CustomName2":"testOU",
-        "subOUs2":[]
-    },
+    "CustomOUs":[
+        "Computers",
+        "Computers/Servers",
+        "Computers/Clients",
+        "Groups",
+        "Groups/GGS",
+        "Groups/DLGS",
+        "Users",
+        "Users DISABLED"
+    ],
     "RootShareName":"Shares",
     "RootSharePath":"C:\\Shares",
     "Depts": {
